@@ -71,9 +71,10 @@ fc-cache -fv "$FONT_DIR"
 echo ""
 echo "[BOOTSTRAP] Installatie van Oh My Zsh..."
 echo "--------------------------------------------------------------------------------"
-export RUNZSH=no
-export CHSH=no
-su - ben -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+log "Installatie van Oh My Zsh (forced reinstall)"
+rm -rf "$HOME_DIR/.oh-my-zsh"
+export RUNZSH=no CHSH=no
+su - ben -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"' || log "⚠️  Oh My Zsh installatie faalde"
 
 # ========== INSTALLATIE VAN POWERLEVEL10K & ZSH PLUGINS ==========
 echo ""
