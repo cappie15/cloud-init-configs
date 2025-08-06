@@ -25,7 +25,8 @@ echo "[BOOTSTRAP] Logging naar: $LOG_FILE"
 # ========== INSTALLATIE VAN PAKKETTEN ==========
 echo "[BOOTSTRAP] Installatie van pakketten..."
 apt-get update
-apt-get install -y zsh nano btop fastfetch tmux fonts-powerline tailscale qemu-guest-agent
+apt-get install -y zsh nano btop tmux fonts-powerline tailscale qemu-guest-agent
+curl -fsSL https://tailscale.com/install.sh | sh
 
 # ========== SSH SLEUTELS IMPORTEREN ==========
 echo "[BOOTSTRAP] Importeren van publieke sleutels van GitHub gebruiker: $REPO_USER"
