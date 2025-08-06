@@ -106,6 +106,19 @@ export RUNZSH=no
 export CHSH=no
 su - ben -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
 
+# ========== INSTALLATIE VAN ZSH PLUGINS ==========
+echo ""
+echo "[BOOTSTRAP] Installatie van zsh-plugins..."
+echo "--------------------------------------------------------------------------------"
+
+ZSH_CUSTOM="$HOME_DIR/.oh-my-zsh/custom"
+
+git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+git clone https://github.com/MohamedElashri/you-should-use "$ZSH_CUSTOM/plugins/you-should-use"
+
+chown -R ben:ben "$ZSH_CUSTOM/plugins"
+
 # ========== DOTFILES INSTALLEREN ==========
 echo ""
 echo "[BOOTSTRAP] Installatie van dotfiles..."
