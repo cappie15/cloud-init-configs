@@ -77,10 +77,17 @@ echo ""
 echo "[BOOTSTRAP] Installatie van Meslo Nerd Fonts..."
 echo "--------------------------------------------------------------------------------"
 mkdir -p "$FONT_DIR"
-curl -fsSL -o "$FONT_DIR/MesloLGS-NF-Regular.ttf" \
-  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Regular/MesloLGS%20NF%20Regular.ttf
-curl -fsSL -o "$FONT_DIR/MesloLGS-NF-Bold.ttf" \
-  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Bold/MesloLGS%20NF%20Bold.ttf
+# MesloLGL Nerd Font Mono (Regular & Bold)
+curl -fsSL -o "$FONT_DIR/MesloLGLNerdFontMono-Regular.ttf" \
+  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Regular/MesloLGLNerdFontMono-Regular.ttf
+curl -fsSL -o "$FONT_DIR/MesloLGLNerdFontMono-Bold.ttf" \
+  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Bold/MesloLGLNerdFontMono-Bold.ttf
+# MesloLGL Nerd Font Propo (Regular & Bold)
+curl -fsSL -o "$FONT_DIR/MesloLGLNerdFontPropo-Regular.ttf" \
+  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Regular/MesloLGLNerdFontPropo-Regular.ttf
+curl -fsSL -o "$FONT_DIR/MesloLGLNerdFontPropo-Bold.ttf" \
+  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Bold/MesloLGLNerdFontPropo-Bold.ttf
+# Cache opnieuw opbouwen
 fc-cache -fv "$FONT_DIR"
 
 # ========== DOTFILES INSTALLEREN ==========
