@@ -7,7 +7,6 @@ FONT_DIR="$HOME_DIR/.local/share/fonts"
 LOG_FILE="$HOME_DIR/bootstrap.log"
 REPO_USER="cappie15"
 REPO_DOTFILES="dotfiles"
-REPO_BRANCH="main"
 WORDS=(atlas echo pixel vortex zephyr shadow tango nova)
 
 # ========== ROOT CHECK ==========
@@ -70,7 +69,7 @@ RANDOM_NAME=${WORDS[$RANDOM % ${#WORDS[@]}]}
 hostnamectl set-hostname "$RANDOM_NAME"
 echo "$RANDOM_NAME" > /etc/machine-id-name
 echo "$RANDOM_NAME" > /etc/hostname
-echo "$RANDOM_NAME" 
+echo "Hostname ingesteld op: $RANDOM_NAME" 
 
 # ========== INSTALLATIE VAN FONTS ==========
 echo ""
@@ -90,15 +89,6 @@ curl -fsSL -o "$FONT_DIR/MesloLGLNerdFontPropo-Bold.ttf" \
 # Cache opnieuw opbouwen
 fc-cache -fv "$FONT_DIR"
 
-# ========== DOTFILES INSTALLEREN ==========
-echo ""
-echo "[BOOTSTRAP] Installatie van dotfiles..."
-echo "--------------------------------------------------------------------------------"
-curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/${REPO_BRANCH}/.p10k.zsh" \
-  -o "$HOME_DIR/.p10k.zsh"
-curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/${REPO_BRANCH}/.tmux.conf" \
-  -o "$HOME_DIR/.tmux.conf"
-
 # ========== POWERLEVEL10K INSTALLEREN ==========
 echo ""
 echo "[BOOTSTRAP] Installatie van Powerlevel10K"
@@ -106,8 +96,18 @@ echo "--------------------------------------------------------------------------
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME_DIR/powerlevel10k"
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> "$HOME_DIR/.zshrc"
 echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> "$HOME_DIR/.zshrc"
-
 chown -R ben:ben "$HOME_DIR"
+
+# ========== DOTFILES INSTALLEREN ==========
+echo ""
+echo "[BOOTSTRAP] Installatie van dotfiles..."
+echo "--------------------------------------------------------------------------------"
+curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/heads/master/.p10k.zsh" \
+  -o "$HOME_DIR/.p10k.zsh"
+curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/heads/master/.tmux.conf" \
+  -o "$HOME_DIR/.tmux.conf"
+  curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/heads/master/.zshrc" \
+  -o "$HOME_DIR/.zshrc"
 
 # ========== EINDE EN IP-WEERGAVE ==========
 INTERNAL_IP=$(hostname -I | awk '{print $1}')
