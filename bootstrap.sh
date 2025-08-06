@@ -18,18 +18,25 @@ fi
 
 # ========== LOGGING ==========
 exec > >(tee "$LOG_FILE") 2>&1
-
+echo ""
+echo ""
+echo ""
 echo "[BOOTSTRAP] Script gestart om $(date)"
 echo "[BOOTSTRAP] Logging naar: $LOG_FILE"
+echo "--------------------------------------------------------------------------------"
 
 # ========== INSTALLATIE VAN PAKKETTEN ==========
+echo ""
 echo "[BOOTSTRAP] Installatie van pakketten..."
+echo "--------------------------------------------------------------------------------"
 apt-get update
 apt-get install -y zsh nano btop tmux fonts-powerline qemu-guest-agent
-curl -fsSL https://tailscale.com/install.sh | sh
+curl -fsSL https://tailscale.com/install.sh | sh >> "$LOGFILE" 2>&1
 
 # ========== SSH SLEUTELS IMPORTEREN ==========
+echo ""
 echo "[BOOTSTRAP] Importeren van publieke sleutels van GitHub gebruiker: $REPO_USER"
+echo "--------------------------------------------------------------------------------"
 mkdir -p "$HOME_DIR/.ssh"
 curl -fsSL "https://github.com/${REPO_USER}.keys" -o "$HOME_DIR/.ssh/authorized_keys"
 chown -R ben:ben "$HOME_DIR/.ssh"
@@ -37,14 +44,19 @@ chmod 700 "$HOME_DIR/.ssh"
 chmod 600 "$HOME_DIR/.ssh/authorized_keys"
 
 # ========== RANDOM HOSTNAME INSTELLEN ==========
+echo ""
 echo "[BOOTSTRAP] Instellen van willekeurige hostname..."
+echo "--------------------------------------------------------------------------------"
 RANDOM_NAME=${WORDS[$RANDOM % ${#WORDS[@]}]}
 hostnamectl set-hostname "$RANDOM_NAME"
 echo "$RANDOM_NAME" > /etc/machine-id-name
 echo "$RANDOM_NAME" > /etc/hostname
+echo "$RANDOM_NAME" 
 
 # ========== INSTALLATIE VAN FONTS ==========
+echo ""
 echo "[BOOTSTRAP] Installatie van Meslo Nerd Fonts..."
+echo "--------------------------------------------------------------------------------"
 mkdir -p "$FONT_DIR"
 curl -fsSL -o "$FONT_DIR/MesloLGS-NF-Regular.ttf" \
   https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Meslo/L/Regular/MesloLGS%20NF%20Regular.ttf
@@ -53,13 +65,18 @@ curl -fsSL -o "$FONT_DIR/MesloLGS-NF-Bold.ttf" \
 fc-cache -fv "$FONT_DIR"
 
 # ========== DOTFILES INSTALLEREN ==========
+echo ""
 echo "[BOOTSTRAP] Installatie van dotfiles..."
+echo "--------------------------------------------------------------------------------"
 curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/${REPO_BRANCH}/.p10k.zsh" \
   -o "$HOME_DIR/.p10k.zsh"
 curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/${REPO_BRANCH}/.tmux.conf" \
   -o "$HOME_DIR/.tmux.conf"
 
-# Powerlevel10k installeren
+# ========== POWERLEVEL10K INSTALLEREN ==========
+echo ""
+echo "[BOOTSTRAP] Installatie van Powerlevel10K"
+echo "--------------------------------------------------------------------------------"
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME_DIR/powerlevel10k"
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> "$HOME_DIR/.zshrc"
 echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> "$HOME_DIR/.zshrc"
@@ -73,6 +90,4 @@ echo ""
 echo ""
 echo ""
 echo "[BOOTSTRAP] ✅ Voltooid. SSH beschikbaar op IP: $INTERNAL_IP"
-
-# Loggingbestand verwijderen bij succes
-rm -f "$LOG_FILE"
+rm -f "$LOG_FILE" # Loggingbestand verwijderen bij succes
