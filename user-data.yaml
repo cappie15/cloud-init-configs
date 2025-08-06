@@ -25,8 +25,7 @@ packages:
 #      export TAILSCALE_AUTHKEY=tskey-ephemeral-REPLACE_THIS
 
 runcmd:
-  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-dotfiles.sh)"
-  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-fonts.sh)"
-  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-tailscale.sh)"
-  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/random-hostname.sh)"
-
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/master/scripts/install-dotfiles.sh)"
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/master/scripts/install-fonts.sh)"
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/master/scripts/install-tailscale.sh)"
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/master/scripts/random-hostname.sh)"
