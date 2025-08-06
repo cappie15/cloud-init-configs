@@ -98,6 +98,14 @@ echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> "$HOME_DIR/.zshrc"
 echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> "$HOME_DIR/.zshrc"
 chown -R ben:ben "$HOME_DIR"
 
+# ========== INSTALLATIE VAN OH MY ZSH ==========
+echo ""
+echo "[BOOTSTRAP] Installatie van Oh My Zsh..."
+echo "--------------------------------------------------------------------------------"
+export RUNZSH=no
+export CHSH=no
+su - ben -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+
 # ========== DOTFILES INSTALLEREN ==========
 echo ""
 echo "[BOOTSTRAP] Installatie van dotfiles..."
@@ -108,6 +116,12 @@ curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/head
   -o "$HOME_DIR/.tmux.conf"
   curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/heads/master/.zshrc" \
   -o "$HOME_DIR/.zshrc"
+
+# ========== ZSH ALS STANDAARD SHELL INSTELLEN ==========
+echo ""
+echo "[BOOTSTRAP] Instellen van zsh als standaard shell voor gebruiker ben"
+echo "--------------------------------------------------------------------------------"
+chsh -s $(which zsh) ben
 
 # ========== EINDE EN IP-WEERGAVE ==========
 INTERNAL_IP=$(hostname -I | awk '{print $1}')
