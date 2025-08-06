@@ -104,5 +104,21 @@ curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/refs
 log "Instellen van zsh als standaard shell voor gebruiker ben"
 chsh -s "$(which zsh)" ben || log "⚠️ Wijzigen standaard shell faalde"
 
+# ========== OPSCHONEN VAN HET SYSTEEM ==========
+log "Opschonen van het systeem"
+# Verwijder APT-cache
+sudo apt clean
+# Verwijder ongebruikte pakketten en afhankelijkheden
+sudo apt autoremove --purge -y
+# Leeg grote logbestanden
+sudo truncate -s 0 /var/log/syslog
+sudo truncate -s 0 /var/log/kern.log
+sudo truncate -s 0 /var/log/auth.log
+# Verwijder uitgeschakelde Snap-versies
+sudo snap list --all | awk '/disabled/{print $1, $2}' | \
+while read snapname revision; do
+  sudo snap remove "$snapname" --revision="$revision"
+done
+
 # ========== EINDE ==========
 log "✅ Bootstrapping voltooid. SSH beschikbaar op IP: $(hostname -I | awk '{print $1}')"
