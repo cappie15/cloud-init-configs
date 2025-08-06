@@ -89,7 +89,7 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/th
 # Plugins
 git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-git clone https://github.com/MohamedElashri/you-should-use.git "$ZSH_CUSTOM/plugins/you-should-use"
+git clone https://github.com/MichaelAquilina/zsh-you-should-use.git "$ZSH_CUSTOM/plugins/you-should-use"
 
 # Eigendom goed zetten
 chown -R ben:ben "$ZSH_CUSTOM"
