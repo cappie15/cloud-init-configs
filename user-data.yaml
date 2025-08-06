@@ -1,0 +1,25 @@
+#cloud-config
+hostname: ubuntu-template
+users:
+  - name: ben
+    groups: [sudo]
+    shell: /bin/zsh
+    ssh_import_id: gh:cappie15
+
+package_update: true
+package_upgrade: true
+packages:
+  - git
+  - zsh
+  - nano
+  - btop
+  - fastfetch
+  - tmux
+  - fonts-powerline
+  - curl
+
+runcmd:
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/random-hostname.sh)"
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-dotfiles.sh)"
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-fonts.sh)"
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-tailscale.sh)"
