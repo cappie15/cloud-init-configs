@@ -12,7 +12,7 @@ WORDS=(atlas echo pixel vortex zephyr shadow tango nova)
 
 # ========== ROOT CHECK ==========
 if [[ $EUID -ne 0 ]]; then
-  echo "[FOUT] Dit script moet als root worden uitgevoerd. Gebruik: sudo ./bootstrap.sh"
+  echo "[FOUT] Dit script werkt enkel als root. Gebruik: sudo ./bootstrap.sh"
   exit 1
 fi
 
