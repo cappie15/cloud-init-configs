@@ -93,6 +93,7 @@ fc-cache -fv "$FONT_DIR"
 echo ""
 echo "[BOOTSTRAP] Installatie van Powerlevel10K"
 echo "--------------------------------------------------------------------------------"
+rm -rf "$HOME_DIR/powerlevel10k"  # Verwijder bestaande installatie indien nodig
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME_DIR/powerlevel10k"
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> "$HOME_DIR/.zshrc"
 echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> "$HOME_DIR/.zshrc"
