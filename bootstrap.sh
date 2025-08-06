@@ -95,9 +95,9 @@ chown -R ben:ben "$ZSH_CUSTOM"
 
 # ========== DOTFILES INSTALLEREN ==========
 log "Installatie van dotfiles"
-curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/master/.p10k.zsh" -o "$HOME_DIR/.p10k.zsh" || log "⚠️ download .p10k.zsh faalde"
-curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/master/.tmux.conf" -o "$HOME_DIR/.tmux.conf" || log "⚠️ download .tmux.conf faalde"
-curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/master/.zshrc" -o "$HOME_DIR/.zshrc" || log "⚠️ download .zshrc faalde"
+curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/refs/heads/master/.p10k.zsh" -o "$HOME_DIR/.p10k.zsh" || log "⚠️ download .p10k.zsh faalde"
+curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/refs/heads/master/.tmux.conf" -o "$HOME_DIR/.tmux.conf" || log "⚠️ download .tmux.conf faalde"
+curl -fsSL "https://raw.githubusercontent.com/${REPO_USER}/${REPO_DOTFILES}/refs/heads/master/.zshrc" -o "$HOME_DIR/.zshrc" || log "⚠️ download .zshrc faalde"
 
 # ========== ZSH ALS STANDAARD SHELL INSTELLEN ==========
 log "Instellen van zsh als standaard shell voor gebruiker ben"
