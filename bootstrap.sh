@@ -67,26 +67,31 @@ curl -fsSL -o "$FONT_DIR/MesloLGLNerdFontMono-Regular.ttf" \
 # (herhaal voor de bold overige fonts)
 fc-cache -fv "$FONT_DIR"
 
-# ========== POWERLEVEL10K INSTALLEREN ==========
-log "Installatie van Powerlevel10K"
-rm -rf "$HOME_DIR/powerlevel10k"
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME_DIR/powerlevel10k" || log "⚠️ Git clone Powerlevel10K faalde"
-echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> "$HOME_DIR/.zshrc"
-echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> "$HOME_DIR/.zshrc"
-chown -R ben:ben "$HOME_DIR"
+# ========== INSTALLATIE VAN OH MY ZSH ==========
+echo ""
+echo "[BOOTSTRAP] Installatie van Oh My Zsh..."
+echo "--------------------------------------------------------------------------------"
+export RUNZSH=no
+export CHSH=no
+su - ben -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
 
-# ========== OH MY ZSH INSTALLEREN ==========
-log "Installatie van Oh My Zsh"
-export RUNZSH=no CHSH=no
-su - ben -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"' || log "⚠️ Oh My Zsh installatie faalde"
+# ========== INSTALLATIE VAN POWERLEVEL10K & ZSH PLUGINS ==========
+echo ""
+echo "[BOOTSTRAP] Installatie van Powerlevel10K & zsh-plugins..."
+echo "--------------------------------------------------------------------------------"
 
-# ========== ZSH PLUGINS INSTALLEREN ==========
-log "Installatie van zsh-plugins"
 ZSH_CUSTOM="$HOME_DIR/.oh-my-zsh/custom"
-git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions" || log "⚠️ autosuggestions plugin faalde"
-git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" || log "⚠️ syntax-highlighting faalde"
-git clone https://github.com/MohamedElashri/you-should-use "$ZSH_CUSTOM/plugins/you-should-use" || log "⚠️ you-should-use plugin faalde"
-chown -R ben:ben "$ZSH_CUSTOM/plugins"
+
+# Powerlevel10k als thema voor Oh My Zsh
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
+
+# Plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+git clone https://github.com/MohamedElashri/you-should-use "$ZSH_CUSTOM/plugins/you-should-use"
+
+# Eigendom goed zetten
+chown -R ben:ben "$ZSH_CUSTOM"
 
 # ========== DOTFILES INSTALLEREN ==========
 log "Installatie van dotfiles"
