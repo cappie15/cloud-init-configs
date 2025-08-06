@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+export DEBIAN_FRONTEND=noninteractive
 
 # ========== VARIABELEN ==========
 HOME_DIR="/home/ben"
@@ -29,15 +30,28 @@ echo "--------------------------------------------------------------------------
 
 # ========== INSTALLATIE VAN PAKKETTEN ==========
 echo ""
-echo "[BOOTSTRAP] Installatie van qemu-guest-agent"
+echo "[BOOTSTRAP] Installatie en activatie van qemu-guest-agent"
 echo "--------------------------------------------------------------------------------"
 apt-get update -qq
-apt install -y qemu-guest-agent 
-systemctl enable qemu-guest-agent 
-systemctl start qemu-guest-agent 
-systemctl status qemu-guest-agent || echo "[INFO] qemu-guest-agent status niet beschikbaar"
-if [ ! -S /dev/virtio-ports/org.qemu.guest_agent.0 ]; then
-  echo "[WAARSCHUWING] virtio socket mist, reboot noodzakelijk" | tee -a "$LOG_FILE"
+apt-get install -y qemu-guest-agent
+# Wacht tot de virtio socket beschikbaar is (max 30s)
+echo "[INFO] Wachten op virtio socket..."
+for i in {1..15}; do
+  if [ -S /dev/virtio-ports/org.qemu.guest_agent.0 ]; then
+    echo "[INFO] Virtio socket gevonden"
+    break
+  else
+    echo "[INFO] Socket nog niet beschikbaar, wachten..."
+    sleep 2
+  fi
+done
+# Start de service als socket beschikbaar is
+if [ -S /dev/virtio-ports/org.qemu.guest_agent.0 ]; then
+  echo "[INFO] qemu-guest-agent starten..."
+  systemctl start qemu-guest-agent
+else
+  echo "[WAARSCHUWING] virtio socket niet beschikbaar, agent start niet"
+  echo "[TIP] Reboot kan nodig zijn om de socket te initialiseren"
 fi
 
 echo ""
