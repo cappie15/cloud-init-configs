@@ -16,6 +16,9 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+# ========== SUCCESVOLLE EXIT => LOG VERWIJDEREN ==========
+trap '[ "$?" -eq 0 ] && rm -f "$LOG_FILE"' EXIT
+
 # ========== LOGGING ==========
 exec > >(tee "$LOG_FILE") 2>&1
 echo ""
@@ -29,26 +32,26 @@ echo "--------------------------------------------------------------------------
 echo ""
 echo "[BOOTSTRAP] Installatie van qemu-guest-agent"
 echo "--------------------------------------------------------------------------------"
-apt-get update -qq >> "$LOGFILE" 2>&1
-apt install -y qemu-guest-agent >> "$LOGFILE" 2>&1
-systemctl enable qemu-guest-agent >> "$LOGFILE" 2>&1
-systemctl start qemu-guest-agent >> "$LOGFILE" 2>&1
-systemctl status qemu-guest-agent
+apt-get update -qq >> "$LOG_FILE" 2>&1
+apt install -y qemu-guest-agent >> "$LOG_FILE" 2>&1
+systemctl enable qemu-guest-agent >> "$LOG_FILE" 2>&1
+systemctl start qemu-guest-agent >> "$LOG_FILE" 2>&1
+systemctl status qemu-guest-agent || echo "[INFO] qemu-guest-agent status niet beschikbaar"
 if [ ! -S /dev/virtio-ports/org.qemu.guest_agent.0 ]; then
-  echo "[WARNING] virtio socket mist, reboot noodzakelijk" | tee -a "$LOGFILE"
+  echo "[WAARSCHUWING] virtio socket mist, reboot noodzakelijk" | tee -a "$LOG_FILE"
 fi
 
 echo ""
 echo "[BOOTSTRAP] Installatie van tailscale"
 echo "--------------------------------------------------------------------------------"
-curl -fsSL https://tailscale.com/install.sh | sh >> "$LOGFILE" 2>&1
-systemctl status tailscaled
+curl -fsSL https://tailscale.com/install.sh | sh >> "$LOG_FILE" 2>&1
+systemctl status tailscaled || echo "[INFO] Tailscale status niet beschikbaar (nog niet geactiveerd)"
 
 echo ""
 echo "[BOOTSTRAP] Installatie van overige pakketten..."
 echo "--------------------------------------------------------------------------------"
-apt-get update -qq >> "$LOGFILE" 2>&1
-apt-get install -y zsh nano btop tmux fonts-powerline qemu-guest-agent
+apt-get update -qq >> "$LOG_FILE" 2>&1
+apt-get install -y zsh nano btop tmux fonts-powerline >> "$LOG_FILE" 2>&1
 
 # ========== SSH SLEUTELS IMPORTEREN ==========
 echo ""
@@ -100,11 +103,10 @@ echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> "$HOME_DIR/.zshrc"
 
 chown -R ben:ben "$HOME_DIR"
 
-# ========== EINDE EN OPRUIMING ==========
+# ========== EINDE EN IP-WEERGAVE ==========
 INTERNAL_IP=$(hostname -I | awk '{print $1}')
 echo ""
 echo ""
 echo ""
 echo ""
 echo "[BOOTSTRAP] ✅ Voltooid. SSH beschikbaar op IP: $INTERNAL_IP"
-rm -f "$LOG_FILE" # Loggingbestand verwijderen bij succes
