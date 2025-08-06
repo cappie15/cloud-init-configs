@@ -18,8 +18,14 @@ packages:
   - fonts-powerline
   - curl
 
+write_files:
+  - path: /etc/profile.d/tailscale.sh
+    permissions: '0644'
+    content: |
+      export TAILSCALE_AUTHKEY=tskey-ephemeral-REPLACE_THIS
+
 runcmd:
-  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/random-hostname.sh)"
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-dotfiles.sh)"
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-fonts.sh)"
   - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/install-tailscale.sh)"
+  - bash -c "$(curl -fsSL https://raw.githubusercontent.com/cappie15/cloud-init-configs/main/scripts/random-hostname.sh)"
