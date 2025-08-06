@@ -27,11 +27,28 @@ echo "--------------------------------------------------------------------------
 
 # ========== INSTALLATIE VAN PAKKETTEN ==========
 echo ""
-echo "[BOOTSTRAP] Installatie van pakketten..."
+echo "[BOOTSTRAP] Installatie van qemu-guest-agent"
 echo "--------------------------------------------------------------------------------"
-apt-get update
-apt-get install -y zsh nano btop tmux fonts-powerline qemu-guest-agent
+apt-get update -qq >> "$LOGFILE" 2>&1
+apt install -y qemu-guest-agent >> "$LOGFILE" 2>&1
+systemctl enable qemu-guest-agent >> "$LOGFILE" 2>&1
+systemctl start qemu-guest-agent >> "$LOGFILE" 2>&1
+systemctl status qemu-guest-agent
+if [ ! -S /dev/virtio-ports/org.qemu.guest_agent.0 ]; then
+  echo "[WARNING] virtio socket mist, reboot noodzakelijk" | tee -a "$LOGFILE"
+fi
+
+echo ""
+echo "[BOOTSTRAP] Installatie van tailscale"
+echo "--------------------------------------------------------------------------------"
 curl -fsSL https://tailscale.com/install.sh | sh >> "$LOGFILE" 2>&1
+systemctl status tailscaled
+
+echo ""
+echo "[BOOTSTRAP] Installatie van overige pakketten..."
+echo "--------------------------------------------------------------------------------"
+apt-get update -qq >> "$LOGFILE" 2>&1
+apt-get install -y zsh nano btop tmux fonts-powerline qemu-guest-agent
 
 # ========== SSH SLEUTELS IMPORTEREN ==========
 echo ""
